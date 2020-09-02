@@ -1,0 +1,20 @@
+- Task
+  - ID
+  - Title
+  - Short Description ???
+  - Description
+  - Creation Date
+  - Creator ID
+  - Executors
+  - Importance
+    - 1 Maximum
+    - 2 High
+    - 3 Middle
+    - 4 Low
+    - 5 Unimportant
+  - Status
+    - Complete
+    - In Process
+    - Wait
+    - Postponed
+    - Failed
