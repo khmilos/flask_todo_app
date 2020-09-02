@@ -16,18 +16,26 @@ bp = Blueprint('account', __name__)
 @bp.before_app_request
 def load_logged_in_user():
     user_id = session.get('user_id')
+    db = get_db()
 
     if user_id is None:
         g.user = None
     else:
-        g.user = user_id # select
+        g.user = db.execute(
+            'SELECT * FROM user WHERE id = ?',
+            (user_id,)
+        ).fetchone()
 
 
 @bp.route('/registration', methods=('GET', 'POST'))
 def registration():
+    if g.user is not None:
+        return redirect(url_for('account.profile'))
+
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
+        name = request.form['name']
         db = get_db()
         error = None
 
@@ -44,9 +52,9 @@ def registration():
         if error is None:
             user_id = str(uuid.uuid4())
             db.execute(
-                'INSERT INTO user(id, email, password) '
-                'VALUES (?, ?, ?)',
-                (user_id, email, generate_password_hash(password))
+                'INSERT INTO user(id, email, password, name) '
+                'VALUES (?, ?, ?, ?)',
+                (user_id, email, generate_password_hash(password), name)
             )
             db.commit()
             session.clear()
@@ -60,6 +68,9 @@ def registration():
 
 @bp.route('/login', methods=('GET', 'POST'))
 def login():
+    if g.user is not None:
+        return redirect(url_for('account.profile'))
+
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
@@ -97,7 +108,29 @@ def logout():
     session.clear()
     return redirect(url_for('index'))
 
-# @bp.route('/profile')
-# def index():
-#     db = get_db()
-#     return render_template('account/profile.html')
+
+@bp.route('/profile', methods=('GET', 'POST'))
+def profile():
+    if g.user is None:
+        return redirect(url_for('index'))
+
+    if request.method == 'POST':
+        info = request.form['info']
+        db = get_db()
+        error = None
+
+        if not info:
+            error = 'Info is required.'
+
+        if error is None:
+            db.execute(
+                'UPDATE user SET info = ? WHERE id = ?',
+                (info, g.user['id'])
+            )
+            db.commit()
+
+            return redirect(url_for('account.profile'))
+
+        flash(error)
+
+    return render_template('account/profile.html')

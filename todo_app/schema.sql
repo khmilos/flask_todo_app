@@ -7,9 +7,10 @@ DROP TABLE IF EXISTS card_executor;
 CREATE TABLE user (
   id TEXT PRIMARY KEY NOT NULL,
   email TEXT NOT NULL,
+  name TEXT NOT NULL,
   password TEXT NOT NULL,
   registered TEXT DEFAULT CURRENT_TIMESTAMP NOT NULL,
-  personal_info TEXT DEFAULT '' NOT NULL
+  info TEXT DEFAULT '' NOT NULL
 );
 
 CREATE TABLE board (

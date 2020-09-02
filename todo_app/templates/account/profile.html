@@ -1,2 +1,69 @@
 {% extends 'base.html' %}
 {% block title %}Profile{% endblock %}
+{% block header %}Your Profile{% endblock %}
+{% block content %}
+<main class="main">
+  <div class="container">
+    <div class="profile-avatar">
+      <img 
+        src="{{ url_for('static', filename='img/{}.jpg'.format(g.user['id'])) }}"
+        alt="Avatar"
+        data-alt="{{ url_for('static', filename='img/default_avatar.jpg') }}" 
+        onerror="this.src=this.dataset.alt;"
+        class="profile-avatar__image" />
+      <h2 class="profile-avatar__name">{{ g.user['name'] }}</h2>
+    </div>
+
+    <ul class="profile-parameters">
+      <li class="profile-parameters__item">
+        <span class="profile-parameters__text">Email:</span>
+        <a 
+          href="mailto:{{ g.user['email'] }}" 
+          class="profile-parameters__text profile-parameters__text_link">
+          {{ g.user['email'] }}
+        </a>
+      </li>
+      <li class="profile-parameters__item">
+        <span class="profile-parameters__text">Registered:</span>
+        <span class="profile-parameters__text">{{ g.user['registered'].split(' ')[0] }}</span>
+      </li>
+    </ul>
+
+    <article class="article">
+      <h2 class="article__title">Your Info</h2>
+      <p class="article__text js-profile-info">
+        {% if g.user['info'] %}
+          {{ g.user['info'] }}
+        {% else %}
+          Info is missing...
+        {% endif %}
+      </p>
+    </article>
+
+    <div class="btn-wrapper">
+      <button class="big-btn js-customize">Customize</button>
+    </div>
+  </div>
+
+  <!-- Modal: Profile Setup -->
+  <div class="modal js-profile-setup">
+    <form class="modal__content" method="POST">
+      <h2 class="modal__title">Profile Setup</h2>
+      <div class="modal__field">
+        <label for="info" class="modal__label">Info:</label>
+        <textarea 
+          name="info" 
+          id="info" 
+          cols="30" 
+          rows="10" 
+          class="modal__textarea js-profile-setup-info">
+        </textarea>
+      </div>
+      <div class="modal__field">
+        <button class="modal__btn">Submit</button>
+      </div>
+      <button class="modal__close js-profile-setup-close"></button>
+    </form>
+  </div>
+</main>
+{% endblock %}
