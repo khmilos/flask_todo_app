@@ -31,4 +31,7 @@ def create_app():
     from . import board
     app.register_blueprint(board.bp)
 
+    from . import task
+    app.register_blueprint(task.bp)
+
     return app

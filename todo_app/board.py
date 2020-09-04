@@ -27,9 +27,9 @@ def board():
         return redirect(url_for('board.board'))
 
     if request.method == 'GET':
-        boardList = db.execute(
+        board_list = db.execute(
             'SELECT * FROM board WHERE owner_id = ?',
             (g.user['id'],)
         ).fetchall()
 
-        return render_template('board/board.html', boardList=boardList)
+        return render_template('board/board.html', board_list=board_list)

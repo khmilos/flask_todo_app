@@ -7,11 +7,11 @@
     <button class="small-btn js-board-filter-btn">Filter</button>
 
     <div class="wrapper">
-      {% if not boardList %}
+      {% if not board_list %}
         <p class="message">You don't have boards.</p>
       {% endif %}
 
-      {% for board in boardList %}
+      {% for board in board_list %}
       <div class="board-card">
         <img 
           src="{{ url_for('static', filename='img/{}.jpg'.format(board['id'])) }}"
@@ -19,7 +19,7 @@
           data-alt="{{ url_for('static', filename='img/default_board.jpg') }}" 
           onerror="this.src=this.dataset.alt;"
           class="board-card__img" />
-        <a href="./card.html">
+        <a href="{{ url_for('task.task', board_id=board['id']) }}">
           <h2 class="board-card__title js-board-card-title">{{board['name']}}</h2>
         </a>
         <button class="btn-dots board-card__setup js-setup-boards-btn"></button>
