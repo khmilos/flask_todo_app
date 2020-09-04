@@ -1,6 +1,6 @@
 import os
 
-from flask import (Flask, render_template)
+from flask import (Flask, render_template, g, redirect, url_for)
 
 
 def create_app():
@@ -17,6 +17,9 @@ def create_app():
 
     @app.route('/')
     def index():
+        if g.user is not None:
+            return redirect(url_for('account.profile'))
+
         return render_template('layout/index.html')
 
     from . import db
@@ -24,5 +27,8 @@ def create_app():
 
     from . import account
     app.register_blueprint(account.bp)
+
+    from . import board
+    app.register_blueprint(board.bp)
 
     return app
