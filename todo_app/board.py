@@ -10,13 +10,14 @@ from todo_app.db import get_db
 bp = Blueprint('board', __name__)
 
 
-@bp.route('/board', methods=('GET', 'POST'))
+@bp.route('/board', methods=('GET', 'POST', 'PUT'))
 def board():
     if g.user is None:
         return redirect(url_for('index'))
 
+    db = get_db()
+
     if request.method == 'POST':
-        db = get_db()
         name = request.form['name']
         db.execute(
             'INSERT INTO board(id, owner_id, name) VALUES(?, ?, ?)',
@@ -26,7 +27,6 @@ def board():
         return redirect(url_for('board.board'))
 
     if request.method == 'GET':
-        db = get_db()
         boardList = db.execute(
             'SELECT * FROM board WHERE owner_id = ?',
             (g.user['id'],)
