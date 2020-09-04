@@ -23,10 +23,10 @@
 
         <nav class="nav js-nav">
           <ul class="nav__list">
+            {% if not g.user %}
             <li class="nav__item js-nav-item">
               <a href="/" class="nav__link">Home</a>
             </li>
-            {% if not g.user %}
             <li class="nav__item js-nav-item">
               <a href="{{ url_for('account.login') }}" class="nav__link">Login</a>
             </li>

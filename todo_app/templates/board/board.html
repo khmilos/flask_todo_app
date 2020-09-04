@@ -71,11 +71,11 @@
 
   <!-- Modal: Board Create -->
   <div class="modal js-board-create">
-    <form action="" class="modal__content">
+    <form class="modal__content" method="POST">
       <h2 class="modal__title">Create Board</h2>
       <div class="modal__field">
-        <div class="modal__label">Name</div>
-        <input type="text" id="create-name" class="modal__text" />
+        <label for="create-name" class="modal__label">Name</label>
+        <input type="text" name="name" id="create-name" class="modal__text" />
       </div>
       <div class="modal__field">
         <button class="modal__btn">Create</button>
