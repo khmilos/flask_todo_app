@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
-{% block title %}{{ board_name }}{% endblock %}
-{% block header %}{{ board_name }}{% endblock %}
+{% block title %}{{ board['name'] }}{% endblock %}
+{% block header %}{{ board['name'] }}{% endblock %}
 {% block content %}
 <main class="main">
   <div class="container">
-    <button class="small-btn js-task-filter-btn">Filter</button>
+    <!-- <button class="small-btn js-task-filter-btn">Filter</button> -->
 
     <div class="wrapper">
       {% if not task_list %}
@@ -12,7 +12,7 @@
       {% endif %}
 
       {% for task in task_list %}
-      <div class="task-card">
+      <div class="task-card" data-id="{{ task['id'] }}">
         {% if task['status'] == 'completed' %}
         <h2 class="task-card__title task-card__title_completed js-task-title js-task-complete">
         {% endif %}
@@ -40,36 +40,44 @@
 
   <!-- Modal: Setup -->
   <div class="modal js-task-setup">
-    <form action="" class="modal__content">
+    <div action="" class="modal__content">
       <h2 class="modal__title">Task Status</h2>
-      <div class="modal__field">
-        <label for="setup-name" class="modal__label">Name</label>
-        <input type="text" name="name" id="setup-name" class="modal__text js-task-setup-name" />
-      </div>
-      <div class="modal__field">
-        <label for="setup-status" class="modal__label">Status</label>
-        <select name="select" id="setup-select" class="modal__select">
-          <option class="js-option js-option-wait">Wait</option>
-          <option class="js-option js-option-process">In Process</option>
-          <option class="js-option js-option-complete">Complete</option>
-        </select>
-      </div>
-      <div class="modal__field">
-        <label for="setup-description" class="modal__label">Description</label>
-        <textarea name="description" id="setup-description" cols="30" rows="10" class="modal__textarea js-task-setup-description"></textarea>
-      </div>
-      <div class="modal__field">
-        <button class="modal__btn">Submit Changes</button>
-      </div>
-      <div class="modal__field">
+      <form
+        action="{{ url_for('task.task_change', board_id=board['id'], task_id=False) }}"
+        method="POST"
+        class="js-task-setup-form">
+        <div class="modal__field">
+          <label for="setup-name" class="modal__label">Name</label>
+          <input type="text" name="name" id="setup-name" class="modal__text js-task-setup-name" />
+        </div>
+        <div class="modal__field">
+          <label for="setup-status" class="modal__label">Status</label>
+          <select name="status" id="setup-select" class="modal__select">
+            <option class="js-option js-option-wait" value="wait">Wait</option>
+            <option class="js-option js-option-process" value="process">In Process</option>
+            <option class="js-option js-option-complete" value="completed">Complete</option>
+          </select>
+        </div>
+        <div class="modal__field">
+          <label for="setup-description" class="modal__label">Description</label>
+          <textarea name="description" id="setup-description" cols="30" rows="10" class="modal__textarea js-task-setup-description"></textarea>
+        </div>
+        <div class="modal__field">
+          <button class="modal__btn">Submit Changes</button>
+        </div>
+      </form>
+      <form 
+        action="{{ url_for('task.task_delete', board_id=board['id'], task_id=False) }}"
+        method="POST"
+        class="modal__field js-task-delete-form m-t-15">
         <button class="modal__btn modal__btn_danger">Delete</button>
-      </div>
+      </form>
       <button class="modal__close js-task-setup-close"></button>
-    </form>
+    </div>
   </div>
 
   <!-- Modal: Filter -->
-  <div class="modal js-task-filter">
+  <!-- <div class="modal js-task-filter">
     <form action="" class="modal__content">
       <h2 class="modal__title">Display</h2>
       <h3 class="modal__subtitle">Sort By</h3>
@@ -95,7 +103,7 @@
       </div>
       <button class="modal__close js-task-filter-close"></button>
     </form>
-  </div>
+  </div> -->
 
   <!-- Modal: Create -->
   <div class="modal js-task-create">

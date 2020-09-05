@@ -243,7 +243,8 @@
       toClose: [document.querySelector('.js-task-setup-close')]
     },
     (triggeredBy) => {
-      const parent = triggeredBy.parentNode; 
+      const parent = triggeredBy.parentNode;
+      const id = parent.dataset.id;
       const h2 = parent.querySelector('.js-task-title');
       const decription = parent.querySelector('.js-task-description')
         .textContent.trim();
@@ -265,6 +266,16 @@
           .setAttribute('selected', '');
       }
       document.querySelector('.js-task-setup-description').value = decription;
+
+      const formSetup = document.querySelector('.js-task-setup-form');
+      const actionSetup = formSetup.action;
+      formSetup.action = actionSetup.split('/').slice(0, -1).join('/') 
+        + `/${id}`;
+
+      const formDelete = document.querySelector('.js-task-delete-form');
+      const actionDelete = formDelete.action;
+      formDelete.action = actionDelete.split('/').slice(0, -1).join('/') 
+        + `/${id}`;
     }
   );
 })()
