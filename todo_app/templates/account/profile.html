@@ -6,7 +6,7 @@
   <div class="container">
     <div class="profile-avatar">
       <img 
-        src="{{ url_for('static', filename='img/{}.jpg'.format(g.user['id'])) }}"
+        src="{{ url_for('static', filename='user/{}.jpg'.format(g.user['id'])) }}"
         alt="Avatar"
         class="profile-avatar__image js-profile-avatar-img" />
       <h2 class="profile-avatar__name">{{ g.user['name'] }}</h2>
