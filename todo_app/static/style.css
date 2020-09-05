@@ -328,6 +328,15 @@ input[type = 'radio'] {
   cursor: pointer;
 }
 
+.modal__file {
+  display: flex;
+  height: 40px;
+  color: var(--fc-sc);
+  font-size: var(--fs-md);
+  outline: none;
+  cursor: pointer;
+}
+
 .modal__text {
   padding: 5px 10px;
   border: none;
@@ -465,6 +474,7 @@ input[type = 'radio'] {
 
 .btn-wrapper {
   position: relative;
+  flex-direction: column;
   margin-top: auto;
   padding: 30px 15px 15px 15px;
   width: 100%; 
@@ -478,6 +488,14 @@ input[type = 'radio'] {
   right: 15px;
   height: 1px;
   background: var(--fc-sc);
+}
+
+.btn-wrapper button {
+  margin-bottom: 15px;
+}
+
+.btn-wrapper button:last-child {
+  margin-bottom: 0;
 }
 
 .btn-dots {

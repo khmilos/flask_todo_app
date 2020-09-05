@@ -39,10 +39,8 @@
     </article>
 
     <div class="btn-wrapper">
-      <button class="big-btn js-profile-setup-btn">Change Info</button>
-    </div>
-    <div class="btn-wrapper">
       <button class="big-btn js-profile-avatar-btn">Customize Profile</button>
+      <button class="big-btn js-profile-setup-btn">Change Info</button>
     </div>
   </div>
 
@@ -69,8 +67,15 @@
 
   <!-- Modal: Set Avatar -->
   <div class="modal js-profile-avatar">
-    <form class="modal__content" method="POST">
+    <form 
+      action="{{ url_for('account.profile_avatar') }}" 
+      method="POST" 
+      enctype = "multipart/form-data"
+      class="modal__content">
       <h2 class="modal__title">Profile Avatar</h2>
+      <div class="modal__field">
+        <input type="file" name="img" id="avatar-img" class="modal__file">
+      </div>
       <div class="modal__field">
         <button class="modal__btn">Submit</button>
       </div>

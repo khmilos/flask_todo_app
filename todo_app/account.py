@@ -8,6 +8,7 @@ from flask import (
 from werkzeug.security import (
     generate_password_hash, check_password_hash
 )
+from werkzeug.utils import secure_filename
 
 from todo_app.db import get_db
 
@@ -143,14 +144,29 @@ def profile():
                 (info, g.user['id'])
             )
             db.commit()
-
-            if os.path.isfile(new_avatar):
-                os.remove(new_avatar)
-            os.rename(dest_avatar, new_avatar)
-
-
             return redirect(url_for('account.profile'))
 
         flash(error)
 
     return render_template('account/profile.html')
+
+
+@bp.route('/profile/avatar', methods=('POST',))
+def profile_avatar():
+    if g.user is None:
+        return redirect(url_for('index'))
+
+    try:
+        path = os.path.join(
+            os.curdir, 
+            'todo_app/static/user/' + g.user['id'] + '.jpg')
+
+        if os.path.isfile(path):
+            os.remove(path)
+
+        f = request.files['img']
+        f.save(path)
+    except:
+        flash('File uploading error.')
+
+    return redirect(url_for('account.profile'))
