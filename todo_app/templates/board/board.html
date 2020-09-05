@@ -4,7 +4,7 @@
 {% block content %}
 <main class="main">
   <div class="container">
-    <button class="small-btn js-board-filter-btn">Filter</button>
+    <!-- <button class="small-btn js-board-filter-btn">Filter</button> -->
 
     <div class="wrapper">
       {% if not board_list %}
@@ -12,7 +12,7 @@
       {% endif %}
 
       {% for board in board_list %}
-      <div class="board-card">
+      <div class="board-card" data-id="{{ board['id'] }}">
         <img 
           src="{{ url_for('static', filename='img/{}.jpg'.format(board['id'])) }}"
           alt="Board" 
@@ -33,7 +33,7 @@
   </div>
 
   <!-- Modal: Filter -->
-  <div class="modal js-board-filter">
+  <!-- <div class="modal js-board-filter">
     <form action="" class="modal__content">
       <h2 class="modal__title">Display</h2>
       <div class="modal__field modal__field_row">
@@ -49,24 +49,34 @@
       </div>
       <button class="modal__close js-board-filter-close"></button>
     </form>
-  </div>
+  </div> -->
 
   <!-- Modal: Board Setup -->
   <div class="modal js-board-setup">
-    <form class="modal__content">
+    <div class="modal__content">
       <h2 class="modal__title">Setup</h2>
-      <div class="modal__field">
-        <label for="" class="modal__label">Name</label>
-        <input type="text" id="setup-name" class="modal__text js-board-setup-name" />
-      </div>
-      <div class="modal__field">
-        <button class="modal__btn">Submit</button>
-      </div>
-      <div class="modal__field">
+      <form
+        action="{{ url_for('board.board_change', board_id=False) }}"
+        method="POST"
+        class="js-board-setup-form">
+        <div class="modal__field">
+          <label for="" class="modal__label">Name</label>
+          <input type="text" id="setup-name" name="name" class="modal__text js-board-setup-name" />
+        </div>
+        <div class="modal__field">
+          <button class="modal__btn">Submit</button>
+        </div>
+      </form>
+      
+      <form 
+        action="{{ url_for('board.board_delete', board_id=False) }}"
+        method="POST"
+        class="modal__field m-t-15 js-board-delete-form">
         <button class="modal__btn modal__btn_danger">Exit & Delete</button>
-      </div>
+      </form>
       <button class="modal__close js-board-setup-close"></button>
-    </form>
+    </div>
+
   </div>
 
   <!-- Modal: Board Create -->

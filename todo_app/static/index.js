@@ -180,10 +180,6 @@
       toClose: [document.querySelector('.js-profile-avatar-close')]
     }
   );
-  if (avatar) {
-    const userAvatar = document.querySelector('.js-profile-avatar-img').src.trim();
-    console.log(userAvatar)
-  }
 
   const filterBoard = ModalFactory.createModal(
     document.querySelector('.js-board-filter'),
@@ -200,8 +196,18 @@
       toClose: [document.querySelector('.js-board-setup-close')]
     },
     (triggeredBy) => {
-      const title = triggeredBy
-        .parentNode.querySelector('.js-board-card-title').textContent.trim();
+      const parent = triggeredBy.parentNode;
+      const id = parent.dataset.id;
+      const formSetup = document.querySelector('.js-board-setup-form'); 
+      const formDelete = document.querySelector('.js-board-delete-form');
+      const actionSetup = formSetup.action;
+      const actionDelete = formDelete.action;
+      formSetup.action = actionSetup.split('/').slice(0, -1).join('/') 
+        + `/${id}`;
+      formDelete.action = actionDelete.split('/').slice(0, -1).join('/') 
+        + `/${id}`;
+      const title = parent.querySelector('.js-board-card-title')
+        .textContent.trim();
       document.querySelector('.js-board-setup-name').value = title;
     }
   );

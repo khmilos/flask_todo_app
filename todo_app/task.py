@@ -10,7 +10,7 @@ from todo_app.db import get_db
 bp = Blueprint('task', __name__)
 
 
-@bp.route('/task/<board_id>', methods=('GET', 'POST'))
+@bp.route('/task/<board_id>', methods=('GET', 'POST', 'PUT'))
 def task(board_id):
     if g.user is None:
         return redirect(url_for('index'))
