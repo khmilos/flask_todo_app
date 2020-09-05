@@ -1,3 +1,5 @@
+import os
+import shutil
 import uuid
 
 from flask import (
@@ -56,6 +58,19 @@ def registration():
                 'VALUES (?, ?, ?, ?)',
                 (user_id, email, generate_password_hash(password), name)
             )
+
+            cur_dir = os.curdir
+            src_avatar = os.path.join(
+                cur_dir, 
+                'todo_app/static/default/avatar.jpg')
+            dest_folder = os.path.join(cur_dir, 'todo_app/static/user')
+            shutil.copy(src_avatar, dest_folder)
+            dest_avatar = dest_folder + '/avatar.jpg'
+            new_avatar = dest_folder + '/' + user_id + '.jpg'
+            if os.path.isfile(new_avatar):
+                os.remove(new_avatar)
+            os.rename(dest_avatar, new_avatar)
+
             db.commit()
             session.clear()
             session['user_id'] = user_id
@@ -128,6 +143,11 @@ def profile():
                 (info, g.user['id'])
             )
             db.commit()
+
+            if os.path.isfile(new_avatar):
+                os.remove(new_avatar)
+            os.rename(dest_avatar, new_avatar)
+
 
             return redirect(url_for('account.profile'))
 

@@ -8,9 +8,7 @@
       <img 
         src="{{ url_for('static', filename='img/{}.jpg'.format(g.user['id'])) }}"
         alt="Avatar"
-        data-alt="{{ url_for('static', filename='img/default_avatar.jpg') }}" 
-        onerror="this.src=this.dataset.alt;"
-        class="profile-avatar__image" />
+        class="profile-avatar__image js-profile-avatar-img" />
       <h2 class="profile-avatar__name">{{ g.user['name'] }}</h2>
     </div>
 
@@ -41,7 +39,10 @@
     </article>
 
     <div class="btn-wrapper">
-      <button class="big-btn js-customize">Customize</button>
+      <button class="big-btn js-profile-setup-btn">Change Info</button>
+    </div>
+    <div class="btn-wrapper">
+      <button class="big-btn js-profile-avatar-btn">Customize Profile</button>
     </div>
   </div>
 
@@ -63,6 +64,17 @@
         <button class="modal__btn">Submit</button>
       </div>
       <button class="modal__close js-profile-setup-close"></button>
+    </form>
+  </div>
+
+  <!-- Modal: Set Avatar -->
+  <div class="modal js-profile-avatar">
+    <form class="modal__content" method="POST">
+      <h2 class="modal__title">Profile Avatar</h2>
+      <div class="modal__field">
+        <button class="modal__btn">Submit</button>
+      </div>
+      <button class="modal__close js-profile-avatar-close"></button>
     </form>
   </div>
 </main>

@@ -163,7 +163,7 @@
   const profile = ModalFactory.createModal(
     document.querySelector('.js-profile-setup'),
     {
-      toOpen: [document.querySelector('.js-customize')],
+      toOpen: [document.querySelector('.js-profile-setup-btn')],
       toClose: [document.querySelector('.js-profile-setup-close')],
     }
   );
@@ -171,6 +171,18 @@
     const userInfo = document.querySelector('.js-profile-info')
       .innerHTML.trim();
     document.querySelector('.js-profile-setup-info').value = userInfo;
+  }
+
+  const avatar = ModalFactory.createModal(
+    document.querySelector('.js-profile-avatar'),
+    {
+      toOpen: [document.querySelector('.js-profile-avatar-btn')],
+      toClose: [document.querySelector('.js-profile-avatar-close')]
+    }
+  );
+  if (avatar) {
+    const userAvatar = document.querySelector('.js-profile-avatar-img').src.trim();
+    console.log(userAvatar)
   }
 
   const filterBoard = ModalFactory.createModal(
