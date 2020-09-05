@@ -21,23 +21,33 @@ def board():
 
     if request.method == 'POST':
         name = request.form['name']
+        f = request.files['img'] if 'img' in request.files else None
         board_id = str(uuid.uuid4())
         db.execute(
             'INSERT INTO board(id, owner_id, name) VALUES(?, ?, ?)',
             (board_id, g.user['id'], name)
         )
-
-        cur_dir = os.curdir
-        src_avatar = os.path.join(
-            cur_dir, 
-            'todo_app/static/default/board.jpg')
-        dest_folder = os.path.join(cur_dir, 'todo_app/static/user')
-        shutil.copy(src_avatar, dest_folder)
-        dest_avatar = dest_folder + '/board.jpg'
-        new_avatar = dest_folder + '/' + board_id + '.jpg'
-        if os.path.isfile(new_avatar):
-            os.remove(new_avatar)
-        os.rename(dest_avatar, new_avatar)
+        print(f)
+        if not f:
+            cur_dir = os.curdir
+            src_avatar = os.path.join(
+                cur_dir, 
+                'todo_app/static/default/board.jpg')
+            dest_folder = os.path.join(cur_dir, 'todo_app/static/board')
+            shutil.copy(src_avatar, dest_folder)
+            dest_avatar = dest_folder + '/board.jpg'
+            new_avatar = dest_folder + '/' + board_id + '.jpg'
+            if os.path.isfile(new_avatar):
+                os.remove(new_avatar)
+            os.rename(dest_avatar, new_avatar)
+        else:
+            path = os.path.join(
+                os.curdir, 
+                'todo_app/static/board/' + board_id + '.jpg')
+            if os.path.isfile(path):
+                os.remove(path)
+            f = request.files['img']
+            f.save(path)
         
         db.commit()
         return redirect(url_for('board.board'))
@@ -62,6 +72,16 @@ def board_change(board_id):
         'UPDATE board SET name = ? WHERE id = ?',
         (name, board_id)
     )
+    f = request.files['img'] if 'img' in request.files else None
+
+    if f:
+        path = os.path.join(
+                os.curdir, 
+                'todo_app/static/board/' + board_id + '.jpg')
+        if os.path.isfile(path):
+            os.remove(path)
+        f = request.files['img']
+        f.save(path)
     db.commit()
     return redirect(url_for('board.board'))
 
@@ -76,5 +96,6 @@ def board_delete(board_id):
         'DELETE FROM board WHERE id = ?',
         (board_id,)
     )
+    os.remove(os.curdir, '/todo_app/static/board/' + board_id + '.jpg')
     db.commit()
     return redirect(url_for('board.board'))

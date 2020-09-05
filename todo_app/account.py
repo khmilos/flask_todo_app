@@ -1,6 +1,7 @@
 import os
 import shutil
 import uuid
+import time
 
 from flask import (
     Blueprint, render_template, request, redirect, url_for, session, g, flash
@@ -148,7 +149,9 @@ def profile():
 
         flash(error)
 
-    return render_template('account/profile.html')
+    return render_template(
+        'account/profile.html', 
+        current_time=str(time.time()))
 
 
 @bp.route('/profile/avatar', methods=('POST',))

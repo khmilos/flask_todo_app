@@ -14,10 +14,8 @@
       {% for board in board_list %}
       <div class="board-card" data-id="{{ board['id'] }}">
         <img 
-          src="{{ url_for('static', filename='img/{}.jpg'.format(board['id'])) }}"
-          alt="Board" 
-          data-alt="{{ url_for('static', filename='img/default_board.jpg') }}" 
-          onerror="this.src=this.dataset.alt;"
+          src="{{ url_for('static', filename='board/{}.jpg'.format(board['id'])) + '?' + current_time }}"
+          alt="Board"
           class="board-card__img" />
         <a href="{{ url_for('task.task', board_id=board['id']) }}">
           <h2 class="board-card__title js-board-card-title">{{board['name']}}</h2>
@@ -57,11 +55,15 @@
       <h2 class="modal__title">Setup</h2>
       <form
         action="{{ url_for('board.board_change', board_id=False) }}"
+        enctype="multipart/form-data"
         method="POST"
         class="js-board-setup-form">
         <div class="modal__field">
           <label for="" class="modal__label">Name</label>
           <input type="text" id="setup-name" name="name" class="modal__text js-board-setup-name" />
+        </div>
+        <div class="modal__field">
+          <input type="file" name="img" id="avatar-img" class="modal__file">
         </div>
         <div class="modal__field">
           <button class="modal__btn">Submit</button>
@@ -81,11 +83,17 @@
 
   <!-- Modal: Board Create -->
   <div class="modal js-board-create">
-    <form class="modal__content" method="POST">
+    <form 
+      method="POST" 
+      enctype="multipart/form-data"
+      class="modal__content">
       <h2 class="modal__title">Create Board</h2>
       <div class="modal__field">
         <label for="create-name" class="modal__label">Name</label>
         <input type="text" name="name" id="create-name" class="modal__text" />
+      </div>
+      <div class="modal__field">
+        <input type="file" name="img" id="avatar-img" class="modal__file">
       </div>
       <div class="modal__field">
         <button class="modal__btn">Create</button>
